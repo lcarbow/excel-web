@@ -1,0 +1,64 @@
+version: '3.9'
+services:
+  web:
+    container_name: crm-tool-1
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8011:8000"
+    volumes:
+      - .:/excel
+    depends_on:
+      - db
+    command: python manage.py runserver 0.0.0.0:8011
+    restart: on-failure:5
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Falkenstein
+      - POSTGRES_DB=jakob  # Specify the desired database name here
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    #ports:
+     # - 5432:5432
+
+volumes:
+  postgres_data:
+
+
+
+
+
+# version: '3.9'
+# services:
+#   web:
+#     container_name: crm-tool
+#     build:
+#       context: .
+#       dockerfile: dockerfile
+#     ports:
+#       - "8001:8000"
+#     volumes:
+#       - /volume1/docker/crm-tool
+#     depends_on:
+#       - db
+#     command: python manage.py runserver 0.0.0.0:8000
+#     restart: on-failure:5
+
+#   db:
+#     image: postgres:13
+#     container_name: crm-db
+#     environment:
+#       - POSTGRES_USER=jakobstinnes
+#       - POSTGRES_PASSWORD=Falkenstein
+#       - POSTGRES_DB=jakob
+#     user: 1026:100
+#     volumes:
+#       - /volume1/docker/crm-tool/data:rw
+#     restart: on-failure:5
+
+# volumes:
+#   postgres_data:

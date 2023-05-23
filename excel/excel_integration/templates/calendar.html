@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+    <h2>Calendar</h2>
+
+    <div id='calendar'></div> 
+
+    <!-- Load FontAwesome stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultView: 'month',
+                themeSystem: 'bootstrap4', // Set the themeSystem to 'bootstrap4'
+                events: [
+                    {% for event in events %}
+                        {
+                            title: '{{ event.title }}',
+                            start: '{{ event.start }}',
+                            end: '{{ event.end }}'
+                        },
+                    {% endfor %}
+                ]
+            });
+        });
+    </script>
+{% endblock %}

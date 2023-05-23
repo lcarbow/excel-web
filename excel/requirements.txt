@@ -1,0 +1,8 @@
+Django==3.2.18
+django_scheduler==0.10.1
+mapbox==0.18.1
+openpyxl==3.0.10
+pandas==1.5.3
+schedule==1.2.0
+psycopg2-binary==2.9.3
+

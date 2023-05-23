@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Edit Contact{% endblock %}
+{% block content %}
+{% load static %}
+    <h1>Edit Contact</h1>
+
+    <form method="post" action="{% url 'update_contact' kunden_id=contact.kunden_id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.termin.label_tag }}
+            {{ form.termin }}
+        </div>
+        <div class="form-group">
+            {{ form.vorname.label_tag }}
+            {{ form.vorname }}
+        </div>
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            {{ form.straße.label_tag }}
+            {{ form.straße }}
+        </div>
+        <div class="form-group">
+            {{ form.hausnummer.label_tag }}
+            {{ form.hausnummer }}
+        </div>
+        <div class="form-group">
+            {{ form.plz.label_tag }}
+            {{ form.plz }}
+        </div>
+        <div class="form-group">
+            {{ form.stadt.label_tag }}
+            {{ form.stadt }}
+        </div>
+        <div class="form-group">
+            {{ form.telefon_primär.label_tag }}
+            {{ form.telefon_primär }}
+        </div>
+        <div class="form-group">
+            {{ form.telefon_sekundär.label_tag }}
+            {{ form.telefon_sekundär }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            {{ form.objekt.label_tag }}
+            {{ form.objekt }}
+        </div>
+        <div class="form-group">
+            {{ form.anlage.label_tag }}
+            {{ form.anlage }}
+        </div>
+        <div class="form-group">
+            {{ form.dach.label_tag }}
+            {{ form.dach }}
+        </div>
+        <div class="form-group">
+            {{ form.infos.label_tag }}
+            {{ form.infos }}
+        </div>
+        <div class="form-group">
+            {{ form.speicher.label_tag }}
+            {{ form.speicher }}
+        </div>
+        <div class="form-group">
+            {{ form.interesse.label_tag }}
+            {{ form.interesse }}
+        </div>
+        <div class="form-group">
+            {{ form.jährlicher_stromverbrauch.label_tag }}
+            {{ form.jährlicher_stromverbrauch }}
+        </div>
+        <div class="form-group">
+            {{ form.anfrage_über.label_tag }}
+            {{ form.anfrage_über }}
+        </div>
+        <div class="form-group">
+            {{ form.kunden_id.label_tag }}
+            {{ form.kunden_id }}
+        </div>
+        
+
+        <button type="submit">Update Contact</button>
+    </form>
+
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+

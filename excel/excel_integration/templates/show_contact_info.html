@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Info{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <h1>Contact Info</h1>
+
+    <div class="contact-info-container">
+        <div class="contact-info-group">
+            <p><strong>Termin:</strong> {{ contact.termin }}</p>
+            <p><strong>Vorname:</strong> {{ contact.vorname }}</p>
+            <p><strong>Name:</strong> {{ contact.name }}</p>
+            <p><strong>Straße:</strong> {{ contact.straße }}</p>
+            <p><strong>Hausnummer:</strong> {{ contact.hausnummer }}</p>
+            <p><strong>PLZ:</strong> {{ contact.plz }}</p>
+            <p><strong>Stadt:</strong> {{ contact.stadt }}</p>
+        </div>
+        <div class="contact-info-group">
+            <p><strong>Telefon (Primär):</strong> {{ contact.telefon_primär }}</p>
+            <p><strong>Telefon (Sekundär):</strong> {{ contact.telefon_sekundär }}</p>
+            <p><strong>Email:</strong> {{ contact.email }}</p>
+            <p><strong>Objekt:</strong> {{ contact.objekt }}</p>
+            <p><strong>Anlage:</strong> {{ contact.anlage }}</p>
+            <p><strong>Dach:</strong> {{ contact.dach }}</p>
+        </div>
+        <div class="contact-info-group">
+            <p><strong>Infos:</strong> {{ contact.infos }}</p>
+            <p><strong>Speicher:</strong> {{ contact.speicher }}</p>
+            <p><strong>Interesse:</strong> {{ contact.interesse }}</p>
+            <p><strong>Jährlicher Stromverbrauch:</strong> {{ contact.jährlicher_stromverbrauch }}</p>
+            <p><strong>Anfrage über:</strong> {{ contact.anfrage_über }}</p>
+            <p><strong>Kunden ID:</strong> {{ contact.kunden_id }}</p>
+        </div>
+    </div>
+
+    <form method="POST" action="{% url 'edit_contact' contact.kunden_id %}">
+        {% csrf_token %}
+        <input type="submit" value="Edit">
+    </form>
+
+    <form method="POST" action="{% url 'delete_contact' contact.kunden_id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+    </form>
+{% endblock %}

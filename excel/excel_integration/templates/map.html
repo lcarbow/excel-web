@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}Map View{% endblock %}
+
+{% block content %}
+<div id='map' style='width: 100%; height: 400px;'></div>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+
+<div class="search-bar">
+  <input type="text" id="contact-search" placeholder="Search by name">
+  <button id="search-button">Search</button>
+</div>
+
+<div class="route-form">
+  <div>
+    <label for="start-coordinates">Start Coordinates:</label>
+    <input type="text" id="start-coordinates" placeholder="Enter start coordinates">
+  
+  </div>
+  <div>
+    <label for="end-coordinates">End Coordinates:</label>
+    <input type="text" id="end-coordinates" placeholder="Enter end coordinates">
+  </div>
+  <button id="calculate-route-button">Calculate Route</button>
+  <button id="clear-button">Clear</button> <!-- Added line -->
+</div>
+
+
+<div id="route-info" style="display: none;">
+  <h2>Route Information</h2>
+  <div id="route-duration"></div>
+  <ol id="directions-list"></ol>
+</div>
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiamFrb2JzdGlubmVzIiwiYSI6ImNsaHJmc3lubDBmMTUzaW9hYTQyNWgxeWoifQ.Yw4qr2BrCFWkaKwAdaHbLA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [10.4515, 53.5511],  // Center coordinates for North Germany [longitude, latitude]
+    zoom: 6,  // Adjust the zoom level as desired
+  });
+
+  var markers = {{ markers|safe }};
+  var markerElements = []; // Array to store the marker elements
+
+ // Create a custom marker icon for your company's location
+var companyIcon = document.createElement('img');
+companyIcon.src = '/static/images/logo.jpg';  // Replace 'logo.jpg' with the correct path to your company's logo
+companyIcon.className = 'company-marker';
+
+var companyPopup = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>Pv Energy Solutions</h3>');
+
+// Create a mapboxgl.Marker object with the custom icon
+var companyMarker = new mapboxgl.Marker({ element: companyIcon })
+  .setLngLat([9.969399, 53.601167])  // Set the coordinates for your company's location
+  .setPopup(companyPopup)
+  .addTo(map);
+
+// Add a click event listener to the company marker
+companyMarker.getElement().addEventListener('click', function() {
+  var startCoordinatesInput = document.getElementById('start-coordinates');
+  var endCoordinatesInput = document.getElementById('end-coordinates');
+
+  var clickedMarkerLngLat = companyMarker.getLngLat();
+  var clickedMarkerCoordinates = clickedMarkerLngLat.lng + ',' + clickedMarkerLngLat.lat;
+
+  // Check which input field is currently empty and fill it with the clicked marker's coordinates
+  if (!startCoordinatesInput.value) {
+    startCoordinatesInput.value = clickedMarkerCoordinates;
+  } else if (!endCoordinatesInput.value) {
+    endCoordinatesInput.value = clickedMarkerCoordinates;
+  }
+});
+
+
+  markers.forEach(function(marker) {
+    var popupContent = '<h3>' + marker.title + '</h3>' +
+                       '<p>' + marker.popup + '</p>' +
+                       '<a href="/contacts/' + marker.kunden_id + '">View Contact Info</a>';
+
+    var markerElement = new mapboxgl.Marker()
+      .setLngLat([marker.lng, marker.lat])
+      .setPopup(new mapboxgl.Popup({ anchor: 'top' }).setHTML(popupContent))
+      .addTo(map);
+
+    markerElement.getElement().addEventListener('click', function() {
+      var startCoordinatesInput = document.getElementById('start-coordinates');
+      var endCoordinatesInput = document.getElementById('end-coordinates');
+
+      var clickedMarkerLngLat = markerElement.getLngLat();
+      var clickedMarkerCoordinates = clickedMarkerLngLat.lng + ',' + clickedMarkerLngLat.lat;
+
+      // Check which input field is currently empty and fill it with the clicked marker's coordinates
+      if (!startCoordinatesInput.value) {
+        startCoordinatesInput.value = clickedMarkerCoordinates;
+      } else if (!endCoordinatesInput.value) {
+        endCoordinatesInput.value = clickedMarkerCoordinates;
+      }
+    });
+
+    markerElements.push({ marker: marker, element: markerElement }); // Store the marker element
+  });
+
+  // Get the search input element and search button
+  var searchInput = document.getElementById('contact-search');
+  var searchButton = document.getElementById('search-button');
+
+  // Add an event listener to the search button
+  searchButton.addEventListener('click', function() {
+    var searchText = searchInput.value.toLowerCase();
+
+    // Loop through the marker elements to filter based on the search text
+    markerElements.forEach(function(markerData) {
+      var markerName = markerData.marker.title.toLowerCase();
+      var markerElement = markerData.element;
+
+      if (markerName.includes(searchText)) {
+        // Show the marker if the name matches the search text
+        markerElement.getElement().style.display = 'block';
+      } else {
+        // Hide the marker if the name doesn't match the search text
+        markerElement.getElement().style.display = 'none';
+      }
+    });
+  });
+
+  // Get the input fields and calculate route button
+  var startCoordinatesInput = document.getElementById('start-coordinates');
+  var endCoordinatesInput = document.getElementById('end-coordinates');
+  var calculateRouteButton = document.getElementById('calculate-route-button');
+  var clearButton = document.getElementById('clear-button'); // Added line
+
+  // Add an event listener to the calculate route button
+  calculateRouteButton.addEventListener('click', function() {
+    var startCoordinates = startCoordinatesInput.value;
+    var endCoordinates = endCoordinatesInput.value;
+
+    // Perform the route calculation and display the route on the map
+    calculateRoute(startCoordinates, endCoordinates);
+  });
+
+// Add an event listener to the clear button
+clearButton.addEventListener('click', function() {
+  // Clear search input
+  searchInput.value = '';
+
+  // Clear start/end coordinates input
+  startCoordinatesInput.value = '';
+  endCoordinatesInput.value = '';
+
+  // Clear route information
+  var routeInfoSection = document.getElementById('route-info');
+  routeInfoSection.style.display = 'none';
+  var directionsList = document.getElementById('directions-list');
+  directionsList.innerHTML = '';
+
+  // Remove the route layer and source from the map
+  if (map.getLayer('route')) {
+    map.removeLayer('route');
+  }
+  if (map.getSource('route')) {
+    map.removeSource('route');
+  }
+
+  // Reset marker display
+  markerElements.forEach(function(markerData) {
+    markerData.element.getElement().style.display = 'block';
+  });
+});
+
+  function calculateRoute(startCoordinates, endCoordinates) {
+    // Remove the existing route layer and source from the map
+    if (map.getLayer('route')) {
+      map.removeLayer('route');
+    }
+    if (map.getSource('route')) {
+      map.removeSource('route');
+    }
+  
+    // Make a request to the Mapbox Directions API to retrieve the route geometry and directions
+    var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + startCoordinates + ';' + endCoordinates + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+  
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        var route = data.routes[0];
+        var routeGeometry = route.geometry;
+        var routeDuration = route.duration;
+        var routeSteps = route.legs[0].steps;
+  
+        // Add a GeoJSON source and layer to display the route on the map
+        map.addSource('route', {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': routeGeometry
+          }
+        });
+  
+        map.addLayer({
+          'id': 'route',
+          'type': 'line',
+          'source': 'route',
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': '#0080ff',
+            'line-width': 5
+          }
+        });
+  
+        // Display route duration
+        var routeDurationElement = document.getElementById('route-duration');
+        routeDurationElement.innerHTML = 'Duration: ' + Math.round(routeDuration / 60) + ' minutes';
+  
+        // Display route directions
+        var directionsList = document.getElementById('directions-list');
+        directionsList.innerHTML = '';
+  
+        routeSteps.forEach(function(step) {
+          var direction = document.createElement('li');
+          direction.textContent = step.maneuver.instruction;
+          directionsList.appendChild(direction);
+        });
+  
+        // Show the route information section
+        var routeInfoSection = document.getElementById('route-info');
+        routeInfoSection.style.display = 'block';
+      });
+  }
+  
+</script>
+
+<style>
+  .company-marker {
+    width: 35px;
+    height: 35px;
+  }
+
+  .route-form {
+    margin-top: 20px;
+  }
+
+  .route-form div {
+    margin-bottom: 10px;
+  }
+
+  .route-form label {
+    display: inline-block;
+    width: 120px;
+  }
+
+  .route-form input {
+    width: 200px;
+  }
+</style>
+
+{% endblock %}

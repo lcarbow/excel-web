@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact List{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <h1>Contact List</h1>
+
+    <!-- Search form -->
+    <form method="GET" action="{% url 'contact_list' %}">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search contacts">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="contact-list-container">
+        <table class="contact-list-table">
+            <tr>
+                <th>Termin</th>
+                <th>Vorname</th>
+                <th>Name</th>
+                <th>Straße</th>
+                <th>Hausnummer</th>
+                <th>PLZ</th>
+                <th>Stadt</th>
+                <th>Telefon (Primär)</th>
+                <th>Telefon (Sekundär)</th>
+                <th>Email</th>
+                <th>Objekt</th>
+                <th>Anlage</th>
+                <th>Dach</th>
+                <th>Infos</th>
+                <th>Speicher</th>
+                <th>Interesse</th>
+                <th>Jährlicher Stromverbrauch</th>
+                <th>Anfrage über</th>
+                <th>latitude</th>
+                <th>longitude</th>
+                <th>Kunden ID</th>
+                <th>Actions</th>
+            </tr>
+            {% for contact in contacts %}
+                <tr onclick="window.open('{% url 'show_contact_info' kunden_id=contact.kunden_id %}', '_blank')">
+                    <td>{{ contact.termin }}</td>
+                    <td>{{ contact.vorname }}</td>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.straße }}</td>
+                    <td>{{ contact.hausnummer }}</td>
+                    <td>{{ contact.plz }}</td>
+                    <td>{{ contact.stadt }}</td>
+                    <td>{{ contact.telefon_primär }}</td>
+                    <td>{{ contact.telefon_sekundär }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.objekt }}</td>
+                    <td>{{ contact.anlage }}</td>
+                    <td>{{ contact.dach }}</td>
+                    <td>{{ contact.infos }}</td>
+                    <td>{{ contact.speicher }}</td>
+                    <td>{{ contact.interesse }}</td>
+                    <td>{{ contact.jährlicher_stromverbrauch }}</td>
+                    <td>{{ contact.anfrage_über }}</td>
+                    <td>{{ contact.latitude }}</td>
+                    <td>{{ contact.longitude }}</td>
+                    <td>{{ contact.kunden_id }}</td>
+                    <td>
+                        <form method="post" action="{% url 'delete_contact' kunden_id=contact.kunden_id %}">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <hr>
+
+    <h2>Create Contact</h2>
+    <form method="post" action="{% url 'add_contact' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Contact</button>
+    </form>
+{% endblock %}

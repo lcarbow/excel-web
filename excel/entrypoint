@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export DATABASE_URL = "db://postgres:Falkenstein@db:5432/jakob"
+
+exec "$@"

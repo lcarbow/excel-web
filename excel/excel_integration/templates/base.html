@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+
+</head>
+<body>
+    <nav class="top-navbar">
+        <ul class="navbar-list">
+            <li>
+                <a href="{% url 'contact_list' %}">
+                    <img src="{% static 'images/logo.jpg' %}" alt="Company Logo" style="width: 90px;">
+                </a>
+                <span class="navbar-brand">PV Energy Solutions</span>
+        </ul>
+    </nav>
+
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li><a href="{% url 'contact_list' %}">Contact List</a></li>
+            <li><a href="{% url 'add_contact' %}">Add Contact</a></li>
+            <li><a href="{% url 'calendar_view' %}">Calendar</a></li> 
+            <li><a href="{% url 'map_view' %}">Map</a></li> 
+            <!-- Add this line -->
+        </ul>
+    </nav>    
+
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
