@@ -7,8 +7,8 @@ services:
       dockerfile: dockerfile
     ports:
       - "8011:8000"
-    volumes:
-      - .:/excel
+    #volumes:
+     # - .:/excel
     depends_on:
       - db
     command: python manage.py runserver 0.0.0.0:8011
