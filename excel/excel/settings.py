@@ -86,7 +86,7 @@ DATABASES = {
         'USER': 'jakobstinnes',  # Database username
         'PASSWORD': 'Falkenstein',  # Database password
         #'HOST': 'localhost',  # Database host (e.g., localhost)
-        'HOST': 'db',
+        'HOST': '172.27.0.1',
         'PORT': '5432',  # Database port (default is 5432)
     }
 }
