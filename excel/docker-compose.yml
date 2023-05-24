@@ -20,7 +20,7 @@ services:
   db:
     image: postgres:latest
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=jakobstinnes
       - POSTGRES_PASSWORD=Falkenstein
       - POSTGRES_DB=jakob  # Specify the desired database name here
     volumes:
