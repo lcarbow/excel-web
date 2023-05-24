@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      -DATABASE_HOST=host.docker.internal
+      - DATABASE_HOST=host.docker.internal
     ports:
       - "8011:8000"
     #volumes:
