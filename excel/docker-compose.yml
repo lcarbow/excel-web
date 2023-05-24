@@ -5,12 +5,16 @@ services:
     build:
       context: .
       dockerfile: dockerfile
+    environment:
+      -DATABASE_HOST=host.docker.internal
     ports:
       - "8011:8000"
     #volumes:
      # - .:/excel
     depends_on:
       - db
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
      
 
     #command: sh -c 'wait-for-it db:5431 -- python manage.py runserver 0.0.0.0:8000'
@@ -30,11 +34,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - crm-1_my-network
-
     ports:
       - 5431:5432
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+
 networks:
   crm-1_my-network:
+    driver: bridge
 
 volumes:
   postgres_data:
