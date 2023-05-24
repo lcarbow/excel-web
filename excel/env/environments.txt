@@ -1,0 +1,4 @@
+export MACHINE_HOST=$(hostname -I | awk '{print $1}')
+export GLOBAL_LOG_PATH=/my/org/log
+export DJANGO_PASSWORD=Falkenstein
+export MY_TOKEN=123456
