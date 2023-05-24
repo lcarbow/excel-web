@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      - DATABASE_HOST=crm-1-db-1
+      - POSTGRES_HOST=$MACHINE_HOST
     ports:
       - "8011:8000"
     #volumes:
