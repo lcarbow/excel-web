@@ -13,6 +13,9 @@ services:
       - db
     #command: python manage.py runserver 192.168.178.142:8011
     restart: on-failure:5
+    networks:
+      - mynetwork
+
 
   db:
     image: postgres:latest
@@ -22,8 +25,14 @@ services:
       - POSTGRES_DB=jakob  # Specify the desired database name here
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
     #ports:
      # - 5432:5432
+networks:
+  mynetwork:
+    driver: bridge
 
 volumes:
   postgres_data:
