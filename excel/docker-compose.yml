@@ -5,8 +5,11 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-    #environment:
-      #- POSTGRES_HOST=db
+    environment:
+      - POSTGRES_HOST=db
+      - DATABASES_USER=postgres
+      - DATABASES_PASSWORD=postgres
+      - DATABASES_DB=postgres
     ports:
       - "8011:8000"
     #volumes:
@@ -33,8 +36,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     #networks:
      # - crm-1_my-network
-    ports:
-      - 5431:5432
+    #ports:
+      #- 5431:5431
     #extra_hosts:
      # - "host.docker.internal:host-gateway"
 
