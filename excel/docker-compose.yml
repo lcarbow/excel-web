@@ -25,6 +25,7 @@ services:
       - POSTGRES_USER=jakobstinnes
       - POSTGRES_PASSWORD=Falkenstein
       - POSTGRES_DB=jakob  # Specify the desired database name here
+      - DATABASE_HOST=host.docker.internal
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
