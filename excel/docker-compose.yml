@@ -29,7 +29,7 @@ services:
       - mynetwork
 
     ports:
-      - 5432:5432
+      - 5431:5432
 networks:
   mynetwork:
     driver: bridge
