@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      - DATABASE_HOST=host.docker.internal
+      - DATABASE_HOST=crm-1-db-1
     ports:
       - "8011:8000"
     #volumes:
@@ -29,7 +29,6 @@ services:
       - POSTGRES_USER=jakobstinnes
       - POSTGRES_PASSWORD=Falkenstein
       - POSTGRES_DB=jakob  # Specify the desired database name here
-      - DATABASE_HOST=host.docker.internal
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
