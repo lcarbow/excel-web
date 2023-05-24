@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'excel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        #'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'jakob',  # Database name
         'USER': 'postgres',  # Database username
         'PASSWORD': 'Falkenstein',  # Database password
