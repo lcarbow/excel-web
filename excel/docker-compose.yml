@@ -14,7 +14,7 @@ services:
     #command: python manage.py runserver 192.168.178.142:8011
     restart: on-failure:5
     networks:
-      - my-network
+      - crm-1_my-network
 
 
   db:
@@ -26,12 +26,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - my-network
+      - crm-1_my-network
 
     ports:
       - 5431:5432
 networks:
-  my-network:
+  crm-1_my-network:
 
 volumes:
   postgres_data:
