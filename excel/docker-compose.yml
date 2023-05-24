@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-    environment:
-      - POSTGRES_HOST=db
+    #environment:
+      #- POSTGRES_HOST=db
     ports:
       - "8011:8000"
     #volumes:
@@ -17,7 +17,7 @@ services:
      # - "host.docker.internal:host-gateway"
      
 
-    #command: sh -c 'wait-for-it db:5431 -- python manage.py runserver 0.0.0.0:8000'
+    command: sh -c 'python manage.py runserver 0.0.0.0:8000'
     restart: on-failure:5
    # networks:
     #  - crm-1_my-network
