@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'jakob',  # Database name
         'USER': 'jakobstinnes',  # Database username
         'PASSWORD': 'Falkenstein',  # Database passwort
-        'HOST': 'host.docker.internal',
+        'HOST': 'crm-1-db-1',
         #'HOST': 'postgres',
         #'HOST': '192.168.178.142',
         'PORT': '5431',  # Database port (default is 5432)
