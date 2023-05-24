@@ -11,7 +11,9 @@ services:
      # - .:/excel
     depends_on:
       - db
-    command: sh -c 'wait-for-it db:5431 -- python manage.py runserver 0.0.0.0:8000'
+      condition: service_healthy
+
+    #command: sh -c 'wait-for-it db:5431 -- python manage.py runserver 0.0.0.0:8000'
     restart: on-failure:5
     networks:
       - crm-1_my-network
@@ -25,6 +27,11 @@ services:
       - POSTGRES_DB=jakob  # Specify the desired database name here
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+     test: ["CMD", "pg_isready", "-U", "jakobstinnes", "-d", "jakob", "-h", "db"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
     networks:
       - crm-1_my-network
 
