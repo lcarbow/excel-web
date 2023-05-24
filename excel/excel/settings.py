@@ -89,7 +89,7 @@ DATABASES = {
        # 'HOST': 'db',
         #'HOST': 'postgres',
         #'HOST': '192.168.178.142',
-        'HOST': '192.168.32.2',
+        'HOST': '192.168.16.1',
         'PORT': '5431',  # Database port (default is 5432)
     }
 }
