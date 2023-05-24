@@ -84,7 +84,7 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.postgresql',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'jakob',  # Database name
-        'USER': 'postgres',  # Database username
+        'USER': 'jakobstinnes',  # Database username
         'PASSWORD': 'Falkenstein',  # Database passwort
         'HOST': 'db',
         #'HOST': 'postgres',
