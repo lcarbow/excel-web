@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      - POSTGRES_HOST=$MACHINE_HOST
+      - POSTGRES_HOST=db
     ports:
       - "8011:8000"
     #volumes:
